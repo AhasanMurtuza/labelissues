@@ -1,0 +1,22 @@
+name: Comment
+
+on:
+  issues:
+    types:[labeled]
+jobs:
+  label_issue:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    steps:
+      - uses: actions/github-script@v6
+        with:
+          script: |
+            if(github.event.action =='labeled){
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: 'Thanks for opening the issue. We will look into it ASAP'
+            })
+            }
